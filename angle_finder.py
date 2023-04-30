@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 import matplotlib.pyplot as plt
-from scipy.signal import find_peaks
+from mpl_toolkits.mplot3d import Axes3D
 
 def findRotationAngle(img):
 
@@ -21,7 +21,6 @@ def findRotationAngle(img):
 
     # Compute the magnitude of the spectrum
     magnitude_spectrum = 20 * np.log(np.abs(fourier_shifted))
-
     # Find the maximum frequency of change in the magnitude spectrum
     max_freq = np.argmax(magnitude_spectrum)
 
@@ -37,6 +36,18 @@ def findRotationAngle(img):
     plt.subplot(122), plt.imshow(magnitude_spectrum, cmap = 'gray')
     plt.title('Magnitude Spectrum'), plt.xticks([]), plt.yticks([])
     plt.show()
+
+    # Create a meshgrid from the array indices
+    x, y = np.meshgrid(range(magnitude_spectrum.shape[0]), range(magnitude_spectrum.shape[1]))
+
+    # Create a figure and a 3D axis
+    fig = plt.figure()
+    ax = fig.add_subplot(111, projection='3d')
+
+    # Plot the surface with x, y, and z values
+    ax.plot_surface(x, y, magnitude_spectrum)
+    plt.show()
+
 
     cv2.waitKey(0)
     cv2.destroyAllWindows()

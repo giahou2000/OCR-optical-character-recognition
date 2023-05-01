@@ -14,6 +14,7 @@ ax = fig.add_subplot(111, projection='3d')
 
 # Plot the surface with x, y, and z values
 ax.plot_surface(x, y, arr2d)
+print(arr2d)
 
 # Set the axis labels
 ax.set_xlabel('X axis')

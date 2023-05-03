@@ -1,7 +1,8 @@
 import cv2
 import numpy as np
 import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D
+import math
+from PIL import Image
 
 def findRotationAngle(img):
 
@@ -54,6 +55,27 @@ def findRotationAngle(img):
     ax.set_zlabel('Z axis')
     # Show the plot
     plt.show()
+
+    center = [int(magnitude_spectrum.shape[0]/2), int(magnitude_spectrum.shape[1]/2)]
+    # print("center is")
+    # print(center)
+    distance = math.sqrt((center[0] - max_row)**2 + (center[1] - max_col)**2)
+    # print(distance)
+    angle_test_list = range(distance - 5, distance + 6)
+
+    projections = []
+    for i in angle_test_list:
+        rot_image = img.rotate(i)
+        # Calculate the vertical projection of the luminance
+        projection = np.sum(rot_image, axis=0)
+        # Normalize the projection to the range [0, 1]
+        projections.append(projection.astype(float) / np.max(projection))
+
+    # # Plot the projection
+    # plt.plot(projection)
+    # plt.xlabel('Column')
+    # plt.ylabel('Luminance')
+    # plt.show()
 
     cv2.waitKey(0)
     cv2.destroyAllWindows()

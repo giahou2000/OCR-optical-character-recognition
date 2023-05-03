@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 import matplotlib.pyplot as plt
 import math
-from PIL import Image
+import imutils
 
 def findRotationAngle(img):
 
@@ -41,7 +41,7 @@ def findRotationAngle(img):
     plt.title('Magnitude Spectrum'), plt.xticks([]), plt.yticks([])
     plt.show()
 
-    # Make a 3D plot of the magnitude
+    # Make a 3D plot of the magnitude of the spectrum
     # Create a meshgrid from the array indices
     y, x = np.meshgrid(range(magnitude_spectrum.shape[0]), range(magnitude_spectrum.shape[1]))
     # Create a figure and a 3D axis
@@ -56,26 +56,69 @@ def findRotationAngle(img):
     # Show the plot
     plt.show()
 
+    # compute the center of the magnitude of the spectrum
     center = [int(magnitude_spectrum.shape[0]/2), int(magnitude_spectrum.shape[1]/2)]
-    # print("center is")
-    # print(center)
-    distance = math.sqrt((center[0] - max_row)**2 + (center[1] - max_col)**2)
-    # print(distance)
-    angle_test_list = range(distance - 5, distance + 6)
+    print("center is")
+    print(center)
 
+    # compute the angle
+    angle = np.arctan2(max_col - center[1], max_row - center[0])
+    print(angle)
+
+    # test some angles
+    angle_test_list = range(int(angle) - 5, int(angle) + 6)
     projections = []
     for i in angle_test_list:
-        rot_image = img.rotate(i)
+        rot = imutils.rotate(img, angle=i)
         # Calculate the vertical projection of the luminance
-        projection = np.sum(rot_image, axis=0)
+        projection = np.sum(rot, axis=0)
         # Normalize the projection to the range [0, 1]
         projections.append(projection.astype(float) / np.max(projection))
+    # Plot the projections
+    fig, axs = plt.subplots(3, 4)
+    axs[0, 0].plot(projections[0])
+    axs[0, 0].set_title('-5 degrees')
+    axs[0, 1].plot(projections[1])
+    axs[0, 1].set_title('Axis [0, 1]')
+    axs[0, 2].plot(projections[2])
+    axs[0, 2].set_title('Axis [0, 2]')
+    axs[0, 3].plot(projections[3])
+    axs[0, 3].set_title('Axis [0, 3]')
+    axs[1, 0].plot(projections[4])
+    axs[1, 0].set_title('Axis [1, 0]')
+    axs[1, 1].plot(projections[5])
+    axs[1, 1].set_title('Axis [1, 1]')
+    axs[1, 2].plot(projections[6])
+    axs[1, 2].set_title('Axis [1, 2]')
+    axs[1, 3].plot(projections[7])
+    axs[1, 3].set_title('Axis [1, 3]')
+    axs[2, 0].plot(projections[8])
+    axs[2, 0].set_title('Axis [2, 0]')
+    axs[2, 1].plot(projections[9])
+    axs[2, 1].set_title('Axis [2, 1]')
+    axs[2, 2].plot(projections[10])
+    axs[2, 2].set_title('Axis [2, 2]')
+    plt.show()
 
-    # # Plot the projection
-    # plt.plot(projection)
-    # plt.xlabel('Column')
-    # plt.ylabel('Luminance')
-    # plt.show()
+    # detect the biggest changes in projections
+    means = []
+    for i in range(11):
+        proj = [x for x in projections[i] if x != 1] # throw away the values that are equal to 1, because we do not need them and they give a wrong result
+        # Compute the differences between consecutive numbers
+        diffs = [abs(proj[j+1] - proj[j]) for j in range(len(proj)-1)]
+        # Compute the average difference and save it
+        avg_diff = sum(diffs) / len(diffs)
+        means.append(avg_diff)
+    
+    print("The computed means of consecutive differences are:")
+    print(means)
+
+    print("The index we're looking for is:")
+    max_index = means.index(max(means))
+    print(max_index)
+    print("The angle we're looking for is:")
+    angle = angle_test_list[max_index]
+    print(angle)
 
     cv2.waitKey(0)
     cv2.destroyAllWindows()

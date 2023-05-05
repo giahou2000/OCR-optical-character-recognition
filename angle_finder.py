@@ -20,12 +20,18 @@ def findRotationAngle(img):
 
     # Compute the magnitude of the spectrum
     magnitude_spectrum = 20 * np.log(np.abs(fourier_shifted))
+    M, N = magnitude_spectrum.shape
+    # find the center of the DFT
+    cx = M // 2
+    cy = N // 2
+    # delete the dc component
+    magnitude_spectrum[cx, cy] = 0
 
     # Find the maximum frequency of change in the magnitude spectrum
     max_freq = np.argmax(magnitude_spectrum)
 
     # Compute the row and column indices of the maximum frequency of change
-    max_row, max_col = np.unravel_index(max_freq, fourier_shifted.shape)
+    max_row, max_col = np.unravel_index(max_freq, magnitude_spectrum.shape)
     print("The max frequency is spotted at")
     print(max_row, max_col)
     print("The magnitude has a shape of")

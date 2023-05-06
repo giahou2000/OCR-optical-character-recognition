@@ -17,12 +17,14 @@ def getcontour(x):
     # subtract the original image from the dilated one
     c = dil_img - x
     cv2.imshow('c', c)
-    cv2.imwrite('c.png', c)
+    # cv2.imwrite('c.png', c)
     cv2.waitKey(0)
 
     # thinned = morph.thin(c, 1)
+    # skeleton = morph.skeletonize(c)
 
     # cv2.imshow('thin', thinned.astype(np.uint8))
+    # cv2.imshow('skeleton', skeleton.astype(np.uint8))
     # cv2.waitKey(0)
     cv2.destroyAllWindows()
     

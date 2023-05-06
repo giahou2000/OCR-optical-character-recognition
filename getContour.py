@@ -15,8 +15,8 @@ def getcontour(x):
     dil_img = cv2.dilate(x, kernel, iterations=1)
 
     # subtract the original image from the dilated one
-    c = dil_img - x
-    cv2.imshow('c', c)
+    contour_img = dil_img - x
+    cv2.imshow('contour_img', contour_img)
     # cv2.imwrite('c.png', c)
     cv2.waitKey(0)
 
@@ -27,5 +27,17 @@ def getcontour(x):
     # cv2.imshow('skeleton', skeleton.astype(np.uint8))
     # cv2.waitKey(0)
     cv2.destroyAllWindows()
+
+    # find and store the contour
+    # c = np.where(contour_img > 0)
+
+    # split the binary image into separate contours
+    contours = cv2.split(contour_img)
+
+    # # display the separate contours
+    # for i, contour in enumerate(contours):
+    #     cv2.imshow(f"Contour {i}", contour)
+    # cv2.waitKey(0)
+    # cv2.destroyAllWindows()
     
-    return c
+    return contours

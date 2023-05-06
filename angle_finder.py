@@ -10,7 +10,7 @@ def findRotationAngle(img):
 
     # Blur the input image
     blurred_img = cv2.blur(img, (18, 18), cv2.BORDER_DEFAULT) 
-    cv2.imshow('blurred_img', blurred_img)
+    # cv2.imshow('blurred_img', blurred_img)
 
     # Compute the 2D Fourier Transform of the input image
     fourier = np.fft.fft2(blurred_img)
@@ -38,7 +38,7 @@ def findRotationAngle(img):
     print(magnitude_spectrum.shape)
 
     # Display the magnitude of the Fourier Transform
-    cv2.imshow('Magnitude Spectrum', magnitude_spectrum.astype(np.uint8))
+    # cv2.imshow('Magnitude Spectrum', magnitude_spectrum.astype(np.uint8))
 
     # Display the magnitude of the Fourier Transform along with the image
     plt.subplot(121), plt.imshow(blurred_img, cmap = 'gray')

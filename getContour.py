@@ -17,7 +17,7 @@ def getcontour(x):
     # subtract the original image from the dilated one
     contour_img = dil_img - x
     cv2.imshow('contour_img', contour_img)
-    # cv2.imwrite('c.png', c)
+    cv2.imwrite('e-contour.png', contour_img)
     cv2.waitKey(0)
 
     # thinned = morph.thin(c, 1)
@@ -28,12 +28,9 @@ def getcontour(x):
     # cv2.waitKey(0)
     cv2.destroyAllWindows()
 
-    # find and store the contour
-    # c = np.where(contour_img > 0)
-
-    # split the binary image into separate contours
-    contours = cv2.split(contour_img)
-
+    # find and store the contour    
+    contours = np.where(contour_img > 0)
+    
     # # display the separate contours
     # for i, contour in enumerate(contours):
     #     cv2.imshow(f"Contour {i}", contour)

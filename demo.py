@@ -11,6 +11,6 @@ angle = findRotationAngle(img)
 
 rot_image = rotateImage(img, angle)
 
-letters = cv2.imread('letters.png', 0)
+letters = cv2.imread('e.png', 0)
 
 c = getcontour(letters)

@@ -8,7 +8,6 @@ def findRotationAngle(img):
 
     angle = 0
 
-    # Blur the input image
     blurred_img = cv2.blur(img, (18, 18), cv2.BORDER_DEFAULT) 
     # cv2.imshow('blurred_img', blurred_img)
 

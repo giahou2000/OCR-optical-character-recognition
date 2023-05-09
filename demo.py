@@ -2,6 +2,7 @@ import cv2
 from angle_finder import findRotationAngle
 from rotation import rotateImage
 from getContour import getcontour
+from lineSeparator import lineSeparator
 
 # Load the input image
 img = cv2.imread('text1.png', 0)
@@ -11,6 +12,13 @@ angle = findRotationAngle(img)
 
 rot_image = rotateImage(img, angle)
 
-letters = cv2.imread('f.png', 0)
+lines = lineSeparator(rot_image)
 
-c = getcontour(letters)
+for line in lines:
+    cv2.imshow('line', line)
+
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+
+# letters = cv2.imread('f.png', 0)
+# c = getcontour(letters)

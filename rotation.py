@@ -1,4 +1,3 @@
-import cv2
 import imutils
 
 def rotateImage(x, angle):
